@@ -1,0 +1,37 @@
+/* Custom styles for IAM System */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.navbar-brand i {
+    font-size: 1.5rem;
+}
+
+.table th {
+    white-space: nowrap;
+}
+
+.status-badge {
+    font-size: 0.875rem;
+}
+
+.status-pending { background-color: #ffc107; }
+.status-active { background-color: #28a745; }
+.status-suspended { background-color: #dc3545; }
+.status-inactive { background-color: #6c757d; }
+.status-archived { background-color: #343a40; }

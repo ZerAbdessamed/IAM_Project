@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - IAM System{% endblock %}
+
+{% block content %}
+<h1><i class="bi bi-speedometer2"></i> Dashboard</h1>
+<hr>
+
+<div class="row g-4 mt-3">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Students</h5>
+                <h2 class="display-6">{{ counts.students }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Faculty</h5>
+                <h2 class="display-6">{{ counts.faculty }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Staff</h5>
+                <h2 class="display-6">{{ counts.staff }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Total Identities</h5>
+                <h2 class="display-6">{{ counts.total }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
