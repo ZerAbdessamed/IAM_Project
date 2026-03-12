@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Identities - IAM System{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center">
+    <h1><i class="bi bi-people"></i> Identity Management</h1>
+    <a href="{{ url_for('identity.create_identity_view') }}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> New Identity
+    </a>
+</div>
+<hr>
+
+<div class="card">
+    <div class="card-header">
+        <form class="row g-3" method="GET">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="q" value="{{ filters.q }}" placeholder="Search by name, ID, email...">
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="type">
+                    <option value="" {% if not filters.type %}selected{% endif %}>All Types</option>
+                    <option value="student" {% if filters.type == 'student' %}selected{% endif %}>Student</option>
+                    <option value="faculty" {% if filters.type == 'faculty' %}selected{% endif %}>Faculty</option>
+                    <option value="staff" {% if filters.type == 'staff' %}selected{% endif %}>Staff</option>
+                    <option value="external" {% if filters.type == 'external' %}selected{% endif %}>External</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="status">
+                    <option value="" {% if not filters.status %}selected{% endif %}>All Status</option>
+                    <option value="pending" {% if filters.status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="active" {% if filters.status == 'active' %}selected{% endif %}>Active</option>
+                    <option value="suspended" {% if filters.status == 'suspended' %}selected{% endif %}>Suspended</option>
+                    <option value="inactive" {% if filters.status == 'inactive' %}selected{% endif %}>Inactive</option>
+                    <option value="archived" {% if filters.status == 'archived' %}selected{% endif %}>Archived</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <input type="number" class="form-control" name="year" value="{{ filters.year }}" placeholder="Year">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-secondary w-100">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in identities %}
+                    <tr>
+                        <td>{{ user.unique_identifier }}</td>
+                        <td>{{ user.full_name }}</td>
+                        <td>{{ user.user_type|capitalize }}</td>
+                        <td>{{ user.personal_email }}</td>
+                        <td>
+                            <span class="badge status-{{ user.identity_status }}">{{ user.identity_status|capitalize }}</span>
+                        </td>
+                        <td class="d-flex gap-1">
+                            <a href="{{ url_for('identity.view_identity', user_id=user.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                            <a href="{{ url_for('identity.edit_identity', user_id=user.id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            {% if user.identity_status == 'active' %}
+                            <form method="POST" action="{{ url_for('identity.deactivate_identity', user_id=user.id) }}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Deactivate</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No identities found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Home - IAM System{% endblock %}
+
+{% block content %}
+<div class="px-4 py-5 text-center">
+    <i class="bi bi-shield-lock display-1 text-primary"></i>
+    <h1 class="display-5 fw-bold mt-3">University Identity & Access Management</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+            Manage identities, authentication, and access control for students, faculty, and staff.
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg px-4 gap-3">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </a>
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary btn-lg px-4">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 py-5">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-person-badge display-4 text-primary"></i>
+                <h3 class="card-title mt-3">Identity Management</h3>
+                <p class="card-text">Create and manage identities for students, faculty, and staff with unique IDs.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-key display-4 text-success"></i>
+                <h3 class="card-title mt-3">Authentication</h3>
+                <p class="card-text">Secure login with multi-factor authentication and password policies.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-shield-check display-4 text-warning"></i>
+                <h3 class="card-title mt-3">Access Control</h3>
+                <p class="card-text">Role-based access control with audit logging and compliance.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

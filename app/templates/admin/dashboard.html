@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - IAM System{% endblock %}
+
+{% block content %}
+<h1><i class="bi bi-gear"></i> Admin Dashboard</h1>
+<hr>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-activity"></i> Recent Activity</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">No recent activity</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-exclamation-triangle"></i> Security Alerts</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">No alerts</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+# Flask and extensions
+Flask==3.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-Migrate==4.0.5
+Flask-Login==0.6.3
+Flask-WTF==1.2.1
+Flask-Mail==0.9.1
+
+# Database
+PyMySQL==1.1.0
+cryptography==41.0.7
+
+# Security
+bcrypt==4.1.2
+pyotp==2.9.0
+python-dotenv==1.0.0
+
+# Utilities
+email-validator==2.1.0
+Werkzeug==3.0.1
+
+# API Documentation
+flasgger==0.9.7.1
