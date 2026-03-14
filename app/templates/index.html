@@ -10,9 +10,15 @@
         <p class="lead mb-4">
             Manage identities, authentication, and access control for students, faculty, and staff.
         </p>
+
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
             <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg px-4 gap-3">
-                <i class="bi bi-box-arrow-in-right"></i> Login
+            {% if current_user.is_authenticated %}
+             <i class="bi bi-box-arrow-in-right"></i> Logout
+            {% else %}
+             <i class="bi bi-box-arrow-in-right"></i> Login
+             {% endif %}
+               
             </a>
             <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary btn-lg px-4">
                 <i class="bi bi-speedometer2"></i> Dashboard

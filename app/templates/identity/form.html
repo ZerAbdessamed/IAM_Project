@@ -66,7 +66,59 @@
         <label class="form-label">Personal Email</label>
         <input type="email" class="form-control" name="personal_email" required value="{{ (user.personal_email if user else request.form.get('personal_email', '')) }}">
     </div>
+    <div class="col-md-3">
+  <label for="password" class="form-label">Password</label>
+        <div class="input-group">
+                             <input type="password" class="form-control" id="password" name="password" required>
+                            <button class="btn btn border -0" type="button" id="togglePassword1">
+                                <i class="bi-eye-slash"></i>
+                            </button>
 
+                        </div>
+                            <small id="password-strength" class="text-muted">Password strength: </small>
+</div>
+
+<div class="col-md-3">
+  <label for="confirm_password" class="form-label">Confirm Password</label>
+        <div class="input-group">
+                            <input type="password" class="form-control" id="conf_password" name="conf_password" required>
+                            <button class="btn btn border -0" type="button" id="togglePassword2">
+                                <i class="bi-eye-slash"></i>
+                            </button>
+         </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/password_strength.js') }}"></script>
+
+<script>
+document.getElementById('togglePassword1').addEventListener('click', function() {
+    const password = document.getElementById('password');
+    const icon = this.querySelector('i');
+    if (password.type === 'password') {
+        password.type = 'text';
+        icon.classList.replace('bi-eye-slash', 'bi-eye');
+    } else {
+        password.type = 'password';
+      
+          icon.classList.replace('bi-eye', 'bi-eye-slash');
+    }
+});
+</script>
+<script>
+document.getElementById('togglePassword2').addEventListener('click', function() {
+    const password = document.getElementById('conf_password');
+    const icon = this.querySelector('i');
+    if (password.type === 'password') {
+        password.type = 'text';
+          icon.classList.replace('bi-eye-slash', 'bi-eye');
+      
+    } else {
+        password.type = 'password';
+          icon.classList.replace('bi-eye', 'bi-eye-slash');
+      
+    }
+});
+</script>
     {% set type_value = (user.user_type if user else request.form.get('user_type', request.args.get('user_type', 'student'))) %}
 
     <div class="col-12"><hr><h5>Type Specific Fields</h5></div>

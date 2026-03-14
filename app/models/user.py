@@ -1,5 +1,5 @@
 from datetime import date
-
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import UserMixin
 
 from app import db
@@ -7,7 +7,6 @@ from app import db
 
 class IdentitySequence(db.Model):
     """Tracks running sequence numbers used for unique identifier generation."""
-
     __tablename__ = "identity_sequences"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -22,7 +21,6 @@ class IdentitySequence(db.Model):
 
 class User(UserMixin, db.Model):
     """Base identity model containing common data for all individuals."""
-
     __tablename__ = "users"
 
     ALLOWED_IDENTITY_STATUSES = {"pending", "active", "suspended", "inactive", "archived"}
@@ -46,6 +44,9 @@ class User(UserMixin, db.Model):
     gender = db.Column(db.String(24), nullable=False)
     personal_email = db.Column(db.String(120), unique=True, nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
+
+    # Authentication
+    password_hash = db.Column(db.String(128), nullable=False)
 
     # Identity categorization and lifecycle
     user_type = db.Column(db.String(24), nullable=False)  # student, faculty, staff, external
@@ -83,6 +84,14 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         return f"user:{self.id}"
+
+    def set_password(self, raw_password):
+        """Hash and store the password."""
+        self.password_hash = generate_password_hash(raw_password)
+
+    def check_password(self, raw_password):
+        """Verify the password against the stored hash."""
+        return check_password_hash(self.password_hash, raw_password)
 
     @staticmethod
     def get_prefix_for_category(user_type, sub_category=None):

@@ -3,13 +3,34 @@ import re
 
 from app import db
 from app.models import External, Faculty, IdentityChangeLog, Staff, Student, User
-
+from werkzeug.security import generate_password_hash
 
 class IdentityValidationError(ValueError):
     pass
 
 
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+
+def evaluate_password_strength(password: str) -> str:
+    """Return password strength: Weak, Medium, Strong"""
+    score = 0
+
+    if len(password) >= 8:
+        score += 1
+    if re.search(r"[a-z]", password) and re.search(r"[A-Z]", password):
+        score += 1
+    if re.search(r"\d", password):
+        score += 1
+    if re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        score += 1
+
+    if score <= 1:
+        return "Weak"
+    elif score <= 3:
+        return "Medium"
+    else:
+        return "Strong"
 
 
 def _parse_date(value, field_name):
@@ -75,6 +96,17 @@ def _validate_common_payload(data, user_id=None):
     if duplicate_query.first() is not None:
         raise IdentityValidationError("Duplicate identity detected (same name and date of birth)")
 
+    # === PASSWORD VALIDATION ===
+    password = _required(data, "password", "Password")
+    password_confirm = _required(data, "conf_password", "Confirm Password")
+
+    if password != password_confirm:
+        raise IdentityValidationError("Password and confirm password must match")
+
+    strength = evaluate_password_strength(password)
+    if strength not in {"Medium", "Strong"}:
+        raise IdentityValidationError("Password must be at least Medium strength")
+
     return {
         "first_name": first_name,
         "last_name": last_name,
@@ -85,6 +117,7 @@ def _validate_common_payload(data, user_id=None):
         "personal_email": personal_email,
         "phone_number": phone_number,
         "user_type": user_type,
+        "password_hash": generate_password_hash(password),  # store hashed password
     }
 
 
@@ -239,6 +272,7 @@ def update_identity(user, data):
         "gender",
         "personal_email",
         "phone_number",
+        "password_hash", 
     ]
 
     for field in tracked_fields:

@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block title %}Login - IAM System{% endblock %}
 
 {% block content %}
@@ -12,22 +11,36 @@
             <div class="card-body">
                 <form method="POST">
                     <div class="mb-3">
+                        <label for="user_type" class="form-label">Login As</label>
+                        <select class="form-select" id="user_type" name="user_type" required>
+                            <option value="" disabled selected>Select type</option>
+                            <option value="admin">Admin</option>
+                            <option value="student">Student</option>
+                            <option value="staff">Staff</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label for="username" class="form-label">Username or Email</label>
                         <input type="text" class="form-control" id="username" name="username" required>
                     </div>
+
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
                             <input type="password" class="form-control" id="password" name="password" required>
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                <i class="bi bi-eye"></i>
+                            <button class="btn btn border -0" type="button" id="togglePassword">
+                                <i class="bi-eye-slash"></i>
                             </button>
                         </div>
                     </div>
+
+ 
+
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="remember" name="remember">
                         <label class="form-check-label" for="remember">Remember me</label>
                     </div>
+
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                 </form>
                 <hr>
@@ -45,12 +58,13 @@
 document.getElementById('togglePassword').addEventListener('click', function() {
     const password = document.getElementById('password');
     const icon = this.querySelector('i');
-    if (password.type === 'password') {
+    if(password.type === 'password'){
         password.type = 'text';
-        icon.classList.replace('bi-eye', 'bi-eye-slash');
+       
+        icon.classList.replace('bi-eye-slash', 'bi-eye');
     } else {
         password.type = 'password';
-        icon.classList.replace('bi-eye-slash', 'bi-eye');
+         icon.classList.replace('bi-eye', 'bi-eye-slash');
     }
 });
 </script>
