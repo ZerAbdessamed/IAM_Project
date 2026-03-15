@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block title %}Login - IAM System{% endblock %}
 
 {% block content %}
@@ -19,6 +20,7 @@
                             <option value="staff">Staff</option>
                         </select>
                     </div>
+
                     <div class="mb-3">
                         <label for="username" class="form-label">Username or Email</label>
                         <input type="text" class="form-control" id="username" name="username" required>
@@ -33,8 +35,6 @@
                             </button>
                         </div>
                     </div>
-
- 
 
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="remember" name="remember">
@@ -60,11 +60,10 @@ document.getElementById('togglePassword').addEventListener('click', function() {
     const icon = this.querySelector('i');
     if(password.type === 'password'){
         password.type = 'text';
-       
         icon.classList.replace('bi-eye-slash', 'bi-eye');
     } else {
         password.type = 'password';
-         icon.classList.replace('bi-eye', 'bi-eye-slash');
+        icon.classList.replace('bi-eye', 'bi-eye-slash');
     }
 });
 </script>

@@ -85,6 +85,7 @@ class User(UserMixin, db.Model):
     def get_id(self):
         return f"user:{self.id}"
 
+  
     def set_password(self, raw_password):
         """Hash and store the password."""
         self.password_hash = generate_password_hash(raw_password)
@@ -92,6 +93,7 @@ class User(UserMixin, db.Model):
     def check_password(self, raw_password):
         """Verify the password against the stored hash."""
         return check_password_hash(self.password_hash, raw_password)
+    
 
     @staticmethod
     def get_prefix_for_category(user_type, sub_category=None):

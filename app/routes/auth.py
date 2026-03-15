@@ -4,6 +4,7 @@ from app.models import AdminAccount
 from app.models.user import User
 from app.routes import auth_bp
 
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     """Login page."""
@@ -53,7 +54,9 @@ def login():
 
     return render_template('auth/login.html')
 
+
 @auth_bp.route('/logout')
 def logout():
+    """Logout user."""
     logout_user()
     return redirect(url_for('main.index'))

@@ -8,7 +8,6 @@ from werkzeug.security import generate_password_hash
 class IdentityValidationError(ValueError):
     pass
 
-
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
@@ -138,10 +137,7 @@ def _apply_student_data(profile, data):
     profile.department = _required(data, "department", "Department")
     profile.group_name = str(data.get("group_name", "")).strip() or None
     profile.scholarship_status = str(data.get("scholarship_status", "false")).lower() in {
-        "1",
-        "true",
-        "yes",
-        "on",
+        "1", "true", "yes", "on",
     }
 
 
@@ -272,7 +268,7 @@ def update_identity(user, data):
         "gender",
         "personal_email",
         "phone_number",
-        "password_hash", 
+        "password_hash",  # keep mybranch changes
     ]
 
     for field in tracked_fields:

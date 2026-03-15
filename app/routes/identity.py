@@ -1,4 +1,4 @@
-from flask import abort, flash, redirect, render_template, request, url_for,jsonify
+from flask import abort, flash, redirect, render_template, request, url_for, jsonify
 from app.services.identity_service import evaluate_password_strength
 from app.models import IdentityChangeLog, User
 from app.routes import identity_bp
@@ -122,9 +122,9 @@ def deactivate_identity(user_id):
     return redirect(url_for('identity.list_identities'))
 
 
-
 @identity_bp.route("/check_password_strength", methods=["POST"])
 def check_password_strength():
+    """Return JSON with password strength score for frontend validation."""
     data = request.get_json()
     password = data.get("password", "")
     strength = evaluate_password_strength(password)

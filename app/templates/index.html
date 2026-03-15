@@ -12,14 +12,16 @@
         </p>
 
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg px-4 gap-3">
             {% if current_user.is_authenticated %}
-             <i class="bi bi-box-arrow-in-right"></i> Logout
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-primary btn-lg px-4 gap-3">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
             {% else %}
-             <i class="bi bi-box-arrow-in-right"></i> Login
-             {% endif %}
-               
-            </a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg px-4 gap-3">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
+            {% endif %}
+            
             <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary btn-lg px-4">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>

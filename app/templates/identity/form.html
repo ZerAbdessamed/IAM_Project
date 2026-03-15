@@ -7,6 +7,7 @@
     <i class="bi bi-person-vcard"></i>
     {{ 'Create Identity' if mode == 'create' else 'Edit Identity' }}
 </h1>
+
 {% if mode == 'create' %}
 <div class="alert alert-light border d-flex gap-2" role="alert">
     <span>Choose form type:</span>
@@ -19,6 +20,7 @@
 <hr>
 
 <form method="POST" class="row g-3">
+    <!-- Basic Info -->
     <div class="col-md-3">
         <label class="form-label">User Type</label>
         <select class="form-select" name="user_type" id="user_type" {% if mode == 'edit' %}disabled{% endif %} required>
@@ -66,61 +68,59 @@
         <label class="form-label">Personal Email</label>
         <input type="email" class="form-control" name="personal_email" required value="{{ (user.personal_email if user else request.form.get('personal_email', '')) }}">
     </div>
+
+    <!-- Password Fields -->
+    {% if mode == 'create' %}
     <div class="col-md-3">
-  <label for="password" class="form-label">Password</label>
+        <label for="password" class="form-label">Password</label>
         <div class="input-group">
-                             <input type="password" class="form-control" id="password" name="password" required>
-                            <button class="btn btn border -0" type="button" id="togglePassword1">
-                                <i class="bi-eye-slash"></i>
-                            </button>
+            <input type="password" class="form-control" id="password" name="password" required>
+            <button class="btn btn border-0" type="button" id="togglePassword1">
+                <i class="bi-eye-slash"></i>
+            </button>
+        </div>
+        <small id="password-strength" class="text-muted">Password strength: </small>
+    </div>
 
-                        </div>
-                            <small id="password-strength" class="text-muted">Password strength: </small>
-</div>
-
-<div class="col-md-3">
-  <label for="confirm_password" class="form-label">Confirm Password</label>
+    <div class="col-md-3">
+        <label for="confirm_password" class="form-label">Confirm Password</label>
         <div class="input-group">
-                            <input type="password" class="form-control" id="conf_password" name="conf_password" required>
-                            <button class="btn btn border -0" type="button" id="togglePassword2">
-                                <i class="bi-eye-slash"></i>
-                            </button>
-         </div>
-</div>
+            <input type="password" class="form-control" id="conf_password" name="conf_password" required>
+            <button class="btn btn border-0" type="button" id="togglePassword2">
+                <i class="bi-eye-slash"></i>
+            </button>
+        </div>
+    </div>
 
-<script src="{{ url_for('static', filename='js/password_strength.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/password_strength.js') }}"></script>
+    <script>
+    document.getElementById('togglePassword1').addEventListener('click', function() {
+        const password = document.getElementById('password');
+        const icon = this.querySelector('i');
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.classList.replace('bi-eye-slash', 'bi-eye');
+        } else {
+            password.type = 'password';
+            icon.classList.replace('bi-eye', 'bi-eye-slash');
+        }
+    });
+    document.getElementById('togglePassword2').addEventListener('click', function() {
+        const password = document.getElementById('conf_password');
+        const icon = this.querySelector('i');
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.classList.replace('bi-eye-slash', 'bi-eye');
+        } else {
+            password.type = 'password';
+            icon.classList.replace('bi-eye', 'bi-eye-slash');
+        }
+    });
+    </script>
+    {% endif %}
 
-<script>
-document.getElementById('togglePassword1').addEventListener('click', function() {
-    const password = document.getElementById('password');
-    const icon = this.querySelector('i');
-    if (password.type === 'password') {
-        password.type = 'text';
-        icon.classList.replace('bi-eye-slash', 'bi-eye');
-    } else {
-        password.type = 'password';
-      
-          icon.classList.replace('bi-eye', 'bi-eye-slash');
-    }
-});
-</script>
-<script>
-document.getElementById('togglePassword2').addEventListener('click', function() {
-    const password = document.getElementById('conf_password');
-    const icon = this.querySelector('i');
-    if (password.type === 'password') {
-        password.type = 'text';
-          icon.classList.replace('bi-eye-slash', 'bi-eye');
-      
-    } else {
-        password.type = 'password';
-          icon.classList.replace('bi-eye', 'bi-eye-slash');
-      
-    }
-});
-</script>
+    <!-- Type Specific Fields -->
     {% set type_value = (user.user_type if user else request.form.get('user_type', request.args.get('user_type', 'student'))) %}
-
     <div class="col-12"><hr><h5>Type Specific Fields</h5></div>
 
     {% if type_value == 'student' %}
@@ -129,13 +129,11 @@ document.getElementById('togglePassword2').addEventListener('click', function() 
     <div class="col-md-3"><label class="form-label">National ID Number</label><input class="form-control" name="national_id_number" required value="{{ (p.national_id_number if p else request.form.get('national_id_number', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Diploma Type</label><input class="form-control" name="high_school_diploma_type" required value="{{ (p.high_school_diploma_type if p else request.form.get('high_school_diploma_type', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Diploma Year</label><input type="number" class="form-control" name="high_school_diploma_year" required value="{{ (p.high_school_diploma_year if p else request.form.get('high_school_diploma_year', '')) }}"></div>
-
     <div class="col-md-4"><label class="form-label">Major Program</label><input class="form-control" name="major_program" required value="{{ (p.major_program if p else request.form.get('major_program', '')) }}"></div>
     <div class="col-md-2"><label class="form-label">Entry Year</label><input type="number" class="form-control" name="entry_year" required value="{{ (p.entry_year if p else request.form.get('entry_year', '')) }}"></div>
     <div class="col-md-2"><label class="form-label">Academic Status</label><input class="form-control" name="academic_status" required value="{{ (p.academic_status if p else request.form.get('academic_status', 'active')) }}"></div>
     <div class="col-md-2"><label class="form-label">Faculty</label><input class="form-control" name="faculty" required value="{{ (p.faculty if p else request.form.get('faculty', '')) }}"></div>
     <div class="col-md-2"><label class="form-label">Department</label><input class="form-control" name="department" required value="{{ (p.department if p else request.form.get('department', '')) }}"></div>
-
     <div class="col-md-3"><label class="form-label">Group</label><input class="form-control" name="group_name" value="{{ (p.group_name if p else request.form.get('group_name', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Scholarship</label><select class="form-select" name="scholarship_status"><option value="false">No</option><option value="true" {% if p and p.scholarship_status %}selected{% endif %}>Yes</option></select></div>
     {% endif %}
@@ -146,11 +144,9 @@ document.getElementById('togglePassword2').addEventListener('click', function() 
     <div class="col-md-3"><label class="form-label">Rank</label><input class="form-control" name="rank" required value="{{ (p.rank if p else request.form.get('rank', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Employment Category</label><input class="form-control" name="employment_category" required value="{{ (p.employment_category if p else request.form.get('employment_category', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Appointment Start Date</label><input type="date" class="form-control" name="appointment_start_date" required value="{{ (p.appointment_start_date.isoformat() if p and p.appointment_start_date else request.form.get('appointment_start_date', '')) }}"></div>
-
     <div class="col-md-4"><label class="form-label">Primary Department</label><input class="form-control" name="primary_department" required value="{{ (p.primary_department if p else request.form.get('primary_department', '')) }}"></div>
     <div class="col-md-4"><label class="form-label">Secondary Departments</label><input class="form-control" name="secondary_departments" value="{{ (p.secondary_departments if p else request.form.get('secondary_departments', '')) }}"></div>
     <div class="col-md-4"><label class="form-label">PhD Institution</label><input class="form-control" name="phd_institution" value="{{ (p.phd_institution if p else request.form.get('phd_institution', '')) }}"></div>
-
     <div class="col-md-3"><label class="form-label">Contract Type</label><input class="form-control" name="contract_type" required value="{{ (p.contract_type if p else request.form.get('contract_type', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Contract Start Date</label><input type="date" class="form-control" name="contract_start_date" required value="{{ (p.contract_start_date.isoformat() if p and p.contract_start_date else request.form.get('contract_start_date', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Contract End Date</label><input type="date" class="form-control" name="contract_end_date" value="{{ (p.contract_end_date.isoformat() if p and p.contract_end_date else request.form.get('contract_end_date', '')) }}"></div>
@@ -163,7 +159,6 @@ document.getElementById('togglePassword2').addEventListener('click', function() 
     <div class="col-md-3"><label class="form-label">Assigned Department/Service</label><input class="form-control" name="assigned_department_service" required value="{{ (p.assigned_department_service if p else request.form.get('assigned_department_service', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Job Title</label><input class="form-control" name="job_title" required value="{{ (p.job_title if p else request.form.get('job_title', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Grade</label><input class="form-control" name="grade" value="{{ (p.grade if p else request.form.get('grade', '')) }}"></div>
-
     <div class="col-md-3"><label class="form-label">Date of Entry</label><input type="date" class="form-control" name="date_of_entry_university" required value="{{ (p.date_of_entry_university.isoformat() if p and p.date_of_entry_university else request.form.get('date_of_entry_university', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Contract Start Date</label><input type="date" class="form-control" name="contract_start_date" value="{{ (p.contract_start_date.isoformat() if p and p.contract_start_date else request.form.get('contract_start_date', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Contract End Date</label><input type="date" class="form-control" name="contract_end_date" value="{{ (p.contract_end_date.isoformat() if p and p.contract_end_date else request.form.get('contract_end_date', '')) }}"></div>
@@ -174,12 +169,12 @@ document.getElementById('togglePassword2').addEventListener('click', function() 
     <div class="col-md-4"><label class="form-label">External Category</label><input class="form-control" name="external_category" required value="{{ (p.external_category if p else request.form.get('external_category', 'contractor_vendor')) }}"></div>
     <div class="col-md-4"><label class="form-label">Organization</label><input class="form-control" name="organization" value="{{ (p.organization if p else request.form.get('organization', '')) }}"></div>
     <div class="col-md-4"><label class="form-label">Alumni Class Year</label><input type="number" class="form-control" name="alumni_class_year" value="{{ (p.alumni_class_year if p and p.alumni_class_year else request.form.get('alumni_class_year', '')) }}"></div>
-
     <div class="col-md-3"><label class="form-label">Access Start Date</label><input type="date" class="form-control" name="access_start_date" value="{{ (p.access_start_date.isoformat() if p and p.access_start_date else request.form.get('access_start_date', '')) }}"></div>
     <div class="col-md-3"><label class="form-label">Access End Date</label><input type="date" class="form-control" name="access_end_date" value="{{ (p.access_end_date.isoformat() if p and p.access_end_date else request.form.get('access_end_date', '')) }}"></div>
     <div class="col-md-6"><label class="form-label">Access Notes</label><input class="form-control" name="access_notes" value="{{ (p.access_notes if p else request.form.get('access_notes', '')) }}"></div>
     {% endif %}
 
+    <!-- Form Actions -->
     <div class="col-12 d-flex gap-2 mt-3">
         <button class="btn btn-primary" type="submit">{{ 'Create Identity' if mode == 'create' else 'Save Changes' }}</button>
         <a href="{{ url_for('identity.list_identities') }}" class="btn btn-outline-secondary">Cancel</a>
