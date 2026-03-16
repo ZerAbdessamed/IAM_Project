@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Staff Profile</h2>
+    <div class="card shadow p-4">
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Full Name:</div>
+            <div class="col-md-8">{{ staff.full_name }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Unique Identifier:</div>
+            <div class="col-md-8">{{ staff.unique_identifier }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Date of Birth:</div>
+            <div class="col-md-8">{{ staff.date_of_birth.strftime('%Y-%m-%d') }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Place of Birth:</div>
+            <div class="col-md-8">{{ staff.place_of_birth }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Nationality:</div>
+            <div class="col-md-8">{{ staff.nationality }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Gender:</div>
+            <div class="col-md-8">{{ staff.gender }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Personal Email:</div>
+            <div class="col-md-8">{{ staff.personal_email }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Phone Number:</div>
+            <div class="col-md-8">{{ staff.phone_number }}</div>
+        </div>
+
+        {% if staff.staff_profile %}
+        <hr>
+        <h5 class="mb-3">Professional Information</h5>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Staff Category:</div>
+            <div class="col-md-8">{{ staff.staff_profile.staff_category }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Assigned Department / Service:</div>
+            <div class="col-md-8">{{ staff.staff_profile.assigned_department_service }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Job Title:</div>
+            <div class="col-md-8">{{ staff.staff_profile.job_title }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Grade:</div>
+            <div class="col-md-8">{{ staff.staff_profile.grade or '-' }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Date of Entry to University:</div>
+            <div class="col-md-8">{{ staff.staff_profile.date_of_entry_university.strftime('%Y-%m-%d') }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Contract Start Date:</div>
+            <div class="col-md-8">{{ staff.staff_profile.contract_start_date.strftime('%Y-%m-%d') if staff.staff_profile.contract_start_date else '-' }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Contract End Date:</div>
+            <div class="col-md-8">{{ staff.staff_profile.contract_end_date.strftime('%Y-%m-%d') if staff.staff_profile.contract_end_date else '-' }}</div>
+        </div>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{{ url_for('main.index') }}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

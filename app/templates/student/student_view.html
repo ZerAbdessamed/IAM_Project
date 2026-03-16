@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Student Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Student Profile</h2>
+    <div class="card shadow p-4">
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Full Name:</div>
+            <div class="col-md-8">{{ student.full_name }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Unique Identifier:</div>
+            <div class="col-md-8">{{ student.unique_identifier }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Date of Birth:</div>
+            <div class="col-md-8">{{ student.date_of_birth.strftime('%Y-%m-%d') }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Place of Birth:</div>
+            <div class="col-md-8">{{ student.place_of_birth }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Nationality:</div>
+            <div class="col-md-8">{{ student.nationality }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Gender:</div>
+            <div class="col-md-8">{{ student.gender }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Personal Email:</div>
+            <div class="col-md-8">{{ student.personal_email }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Phone Number:</div>
+            <div class="col-md-8">{{ student.phone_number }}</div>
+        </div>
+
+        {% if student.student_profile %}
+        <hr>
+        <h5 class="mb-3">Academic Information</h5>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Student Category:</div>
+            <div class="col-md-8">{{ student.student_profile.student_category }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">National ID Number:</div>
+            <div class="col-md-8">{{ student.student_profile.national_id_number }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">High School Diploma Type:</div>
+            <div class="col-md-8">{{ student.student_profile.high_school_diploma_type }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">High School Diploma Year:</div>
+            <div class="col-md-8">{{ student.student_profile.high_school_diploma_year }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">High School Honors:</div>
+            <div class="col-md-8">{{ student.student_profile.high_school_honors or '-' }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Major / Program:</div>
+            <div class="col-md-8">{{ student.student_profile.major_program }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Entry Year:</div>
+            <div class="col-md-8">{{ student.student_profile.entry_year }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Academic Status:</div>
+            <div class="col-md-8">{{ student.student_profile.academic_status }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Faculty:</div>
+            <div class="col-md-8">{{ student.student_profile.faculty }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Department:</div>
+            <div class="col-md-8">{{ student.student_profile.department }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Group Name:</div>
+            <div class="col-md-8">{{ student.student_profile.group_name or '-' }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 fw-bold">Scholarship Status:</div>
+            <div class="col-md-8">{{ 'Yes' if student.student_profile.scholarship_status else 'No' }}</div>
+        </div>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{{ url_for('main.index') }}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
