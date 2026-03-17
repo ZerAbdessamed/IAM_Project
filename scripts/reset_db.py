@@ -8,12 +8,14 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import make_url
 
-# Ensure project root is importable when running this script directly.
 ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from app import create_app, db
+from app.models.user import User
+from app.models import AdminAccount
+from werkzeug.security import generate_password_hash
 
 
 def ensure_database_exists(database_uri: str) -> None:
@@ -44,17 +46,41 @@ def ensure_database_exists(database_uri: str) -> None:
 
 
 def reset_database(flask_env: str) -> None:
+    """Drop all tables, recreate them, and optionally create a default admin."""
     app = create_app(flask_env)
 
     with app.app_context():
-        # Ensure all models are loaded into SQLAlchemy metadata.
+       
         importlib.import_module("app.models")
 
         database_uri = app.config["SQLALCHEMY_DATABASE_URI"]
         ensure_database_exists(database_uri)
 
+       
         db.drop_all()
         db.create_all()
+
+        
+        engine = db.get_engine()
+        with engine.connect() as conn:
+            conn.execute(text(
+                "ALTER TABLE users MODIFY password_hash VARCHAR(1024) NOT NULL"
+            ))
+            conn.commit()
+
+        
+        if not AdminAccount.query.first():
+            default_admin = AdminAccount(
+                username="admin",
+                email="admin@example.com",
+                full_name="Super Admin",
+                password_hash=generate_password_hash("Admin123!"),
+                is_active_flag=True,
+                mfa_enabled=False,
+            )
+            db.session.add(default_admin)
+            db.session.commit()
+            print("Default admin created: username='admin', password='Admin123!'")
 
     print(f"Fresh database created successfully for environment: {flask_env}")
 

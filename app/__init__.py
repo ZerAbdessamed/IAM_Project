@@ -9,13 +9,11 @@ import importlib
 
 from app.config import config_by_name
 
-# Initialize extensions
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 mail = Mail()
 
-# Swagger configuration
 swagger_config = {
     "headers": [],
     "specs": [
@@ -174,7 +172,6 @@ swagger_template = {
         },
     },
 }
-
 
 def create_app(config_name='default'):
     """Application factory."""

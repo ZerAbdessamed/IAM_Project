@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Two-Factor Authentication{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h3 class="card-title mb-3">Two-Factor Authentication</h3>
+                <p>Please enter the 6-digit code from your Google Authenticator or Authy app:</p>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <input type="text" name="code" class="form-control text-center" placeholder="123456" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Verify</button>
+                </form>
+
+                <small class="text-muted mt-2 d-block">
+                    The code refreshes every 30 seconds.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

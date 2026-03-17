@@ -1,4 +1,5 @@
 from datetime import date
+import pyotp
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import UserMixin
 
@@ -35,7 +36,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     unique_identifier = db.Column(db.String(16), unique=True, nullable=False, index=True)
 
-    # Common data for all individuals
+    
     first_name = db.Column(db.String(80), nullable=False)
     last_name = db.Column(db.String(80), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
@@ -45,11 +46,15 @@ class User(UserMixin, db.Model):
     personal_email = db.Column(db.String(120), unique=True, nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
 
-    # Authentication
+  
     password_hash = db.Column(db.String(128), nullable=False)
 
-    # Identity categorization and lifecycle
-    user_type = db.Column(db.String(24), nullable=False)  # student, faculty, staff, external
+   
+    totp_secret = db.Column(db.String(32), nullable=True)
+    mfa_enabled = db.Column(db.Boolean, default=False)
+
+    # Identity lifecycle
+    user_type = db.Column(db.String(24), nullable=False)
     identity_status = db.Column(db.String(24), nullable=False, default="pending")
 
     created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
@@ -57,6 +62,7 @@ class User(UserMixin, db.Model):
         db.DateTime, server_default=db.func.now(), onupdate=db.func.now(), nullable=False
     )
 
+    # Relationships
     student_profile = db.relationship(
         "Student", back_populates="user", uselist=False, cascade="all, delete-orphan"
     )
@@ -73,9 +79,10 @@ class User(UserMixin, db.Model):
         "IdentityChangeLog", back_populates="user", cascade="all, delete-orphan"
     )
 
+   
+
     @property
     def is_active(self):
-        """Compatibility helper for Flask-Login and account state checks."""
         return self.identity_status == "active"
 
     @property
@@ -86,16 +93,35 @@ class User(UserMixin, db.Model):
         return f"user:{self.id}"
 
     def set_password(self, raw_password):
-        """Hash and store the password."""
         self.password_hash = generate_password_hash(raw_password)
 
     def check_password(self, raw_password):
-        """Verify the password against the stored hash."""
         return check_password_hash(self.password_hash, raw_password)
+
+    
+
+    def generate_totp_secret(self):
+        """Generate a new TOTP secret"""
+        self.totp_secret = pyotp.random_base32()
+
+    def get_totp_uri(self):
+        """Generate URI for QR Code (Google Authenticator)"""
+        return pyotp.totp.TOTP(self.totp_secret).provisioning_uri(
+            name=self.personal_email,
+            issuer_name="University IAM"
+        )
+
+    def verify_totp(self, code):
+        """Verify TOTP code"""
+        if not self.totp_secret:
+            return False
+        totp = pyotp.TOTP(self.totp_secret)
+        return totp.verify(code)
+
+ 
 
     @staticmethod
     def get_prefix_for_category(user_type, sub_category=None):
-        """Return the correct identifier prefix based on type/sub-category."""
         if user_type == "student" and sub_category == "phd":
             return "PHD"
         if user_type == "staff" and sub_category == "temporary":
@@ -111,19 +137,22 @@ class User(UserMixin, db.Model):
 
     @classmethod
     def generate_unique_identifier(cls, user_type, sub_category=None, year=None):
-        """Generate identifier in [TYPE][YEAR][NUMBER] format with 5-digit sequence."""
         generation_year = year or date.today().year
         prefix = cls.get_prefix_for_category(user_type, sub_category)
+
         if not prefix:
-            raise ValueError("Invalid user type/sub-category for identifier generation")
+            raise ValueError("Invalid user type/sub-category")
 
         seq = IdentitySequence.query.filter_by(prefix=prefix, year=generation_year).first()
+
         if seq is None:
             seq = IdentitySequence(prefix=prefix, year=generation_year, current_value=0)
             db.session.add(seq)
 
         seq.current_value += 1
+
         return f"{prefix}{generation_year}{seq.current_value:05d}"
+
 
     @classmethod
     def is_valid_transition(cls, from_status, to_status):
@@ -133,13 +162,14 @@ class User(UserMixin, db.Model):
         return self.is_valid_transition(self.identity_status, new_status)
 
     def transition_status(self, new_status):
-        """Apply lifecycle transition only if it is allowed by project rules."""
         if new_status not in self.ALLOWED_IDENTITY_STATUSES:
             raise ValueError(f"Invalid status: {new_status}")
+
         if not self.can_transition_to(new_status):
             raise ValueError(
                 f"Invalid transition from {self.identity_status} to {new_status}"
             )
+
         self.identity_status = new_status
 
     def __repr__(self):

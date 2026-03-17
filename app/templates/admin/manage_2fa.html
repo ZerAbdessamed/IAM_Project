@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Manage Two-Factor Authentication{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-3">Manage Two-Factor Authentication (2FA) for Users</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>User Type</th>
+                <th>2FA Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.personal_email }}</td>
+                <td>{{ user.user_type }}</td>
+                <td>{{ "Enabled" if user.mfa_enabled else "Disabled" }}</td>
+                <td>
+                    <form method="POST" class="d-inline">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        {% if user.mfa_enabled %}
+                        <button type="submit" name="action" value="disable" class="btn btn-sm btn-danger">Disable</button>
+                        {% else %}
+                        <button type="submit" name="action" value="enable" class="btn btn-sm btn-success">Enable</button>
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
