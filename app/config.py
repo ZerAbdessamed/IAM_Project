@@ -4,7 +4,6 @@ import os
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
 
-    # Prefer DATABASE_URL when provided, otherwise build a MySQL URI from env vars.
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL",
         (

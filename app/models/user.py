@@ -2,8 +2,10 @@ from datetime import date
 import pyotp
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import UserMixin
-
+from itsdangerous import URLSafeTimedSerializer
+from flask import current_app
 from app import db
+
 
 
 class IdentitySequence(db.Model):
@@ -45,14 +47,14 @@ class User(UserMixin, db.Model):
     gender = db.Column(db.String(24), nullable=False)
     personal_email = db.Column(db.String(120), unique=True, nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
-
+    
   
     password_hash = db.Column(db.String(128), nullable=False)
 
    
     totp_secret = db.Column(db.String(32), nullable=True)
     mfa_enabled = db.Column(db.Boolean, default=False)
-
+    first_login = db.Column(db.Boolean, default=True)
     # Identity lifecycle
     user_type = db.Column(db.String(24), nullable=False)
     identity_status = db.Column(db.String(24), nullable=False, default="pending")
@@ -80,6 +82,21 @@ class User(UserMixin, db.Model):
     )
 
    
+
+ 
+
+    def get_reset_token(self):
+        s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+        return s.dumps({'user_id': self.id})
+
+    @staticmethod
+    def verify_reset_token(token, expires_sec=1800): 
+        s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token, max_age=expires_sec)
+        except:
+            return None
+        return User.query.get(data['user_id'])
 
     @property
     def is_active(self):
@@ -174,3 +191,5 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f"<User id={self.id} uid={self.unique_identifier} type={self.user_type}>"
+    
+    

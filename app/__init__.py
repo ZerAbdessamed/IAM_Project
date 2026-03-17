@@ -180,12 +180,23 @@ def create_app(config_name='default'):
     app.config.from_object(config_by_name.get(config_name, config_by_name['default']))
     
     
+
+    app.config.update(
+        MAIL_SERVER='smtp.gmail.com',
+        MAIL_PORT=587,
+        MAIL_USE_TLS=True,
+        MAIL_USERNAME='iam.university.project@gmail.com',
+        MAIL_PASSWORD=''
+    )
+
+
+
     # Initialize extensions with app
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
     mail.init_app(app)
-    
+
     # Configure login manager
     login_manager.login_view = 'auth.login'
     login_manager.login_message_category = 'info'
