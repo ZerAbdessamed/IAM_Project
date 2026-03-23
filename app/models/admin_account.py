@@ -14,7 +14,9 @@ class AdminAccount(UserMixin, db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     email = db.Column(db.String(120), unique=True, nullable=False, index=True)
     full_name = db.Column(db.String(120), nullable=False)
-
+    
+    failed_login_attempts = db.Column(db.Integer, default=0)
+    lockout_until = db.Column(db.DateTime, nullable=True)
     password_hash = db.Column(db.String(255), nullable=False)
 
     is_active_flag = db.Column(db.Boolean, nullable=False, default=True)

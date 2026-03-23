@@ -186,7 +186,7 @@ def create_app(config_name='default'):
         MAIL_PORT=587,
         MAIL_USE_TLS=True,
         MAIL_USERNAME='iam.university.project@gmail.com',
-        MAIL_PASSWORD=''
+        MAIL_PASSWORD='hkjeoeeqqceoehwz'
     )
 
 

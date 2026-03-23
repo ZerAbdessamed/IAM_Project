@@ -3,9 +3,8 @@ import importlib
 import os
 import sys
 from pathlib import Path
-
 from dotenv import load_dotenv
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, inspect
 from sqlalchemy.engine import make_url
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -46,29 +45,58 @@ def ensure_database_exists(database_uri: str) -> None:
 
 
 def reset_database(flask_env: str) -> None:
-    """Drop all tables, recreate them, and optionally create a default admin."""
+    """Drop all tables, recreate them, modify users table, and optionally create a default admin."""
     app = create_app(flask_env)
 
     with app.app_context():
-       
         importlib.import_module("app.models")
 
         database_uri = app.config["SQLALCHEMY_DATABASE_URI"]
         ensure_database_exists(database_uri)
 
-       
+     
         db.drop_all()
         db.create_all()
 
-        
+      
         engine = db.get_engine()
-        with engine.connect() as conn:
-            conn.execute(text(
-                "ALTER TABLE users MODIFY password_hash VARCHAR(1024) NOT NULL"
-            ))
-            conn.commit()
+        inspector = inspect(engine)
+ 
+        if "admin_accounts" in inspector.get_table_names():
+            admin_columns = [col['name'] for col in inspector.get_columns('admin_accounts')]
 
-        
+            with engine.connect() as conn:
+                if "failed_login_attempts" not in admin_columns:
+                    conn.execute(text(
+                        "ALTER TABLE admin_accounts ADD COLUMN failed_login_attempts INT DEFAULT 0"
+                    ))
+                if "lockout_until" not in admin_columns:
+                    conn.execute(text(
+                        "ALTER TABLE admin_accounts ADD COLUMN lockout_until DATETIME NULL"
+                    ))
+                conn.commit()
+
+        if "users" in inspector.get_table_names():
+            columns = [col['name'] for col in inspector.get_columns('users')]
+
+            with engine.connect() as conn:
+                if "failed_login_attempts" not in columns:
+                    conn.execute(text(
+                        "ALTER TABLE users ADD COLUMN failed_login_attempts INT DEFAULT 0"
+                    ))
+                if "lockout_until" not in columns:
+                    conn.execute(text(
+                        "ALTER TABLE users ADD COLUMN lockout_until DATETIME NULL"
+                    ))
+
+             
+                if "password_hash" in columns:
+                    conn.execute(text(
+                        "ALTER TABLE users MODIFY password_hash VARCHAR(1024) NOT NULL"
+                    ))
+                conn.commit()
+
+       
         if not AdminAccount.query.first():
             default_admin = AdminAccount(
                 username="admin",
