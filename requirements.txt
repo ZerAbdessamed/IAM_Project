@@ -21,3 +21,6 @@ Werkzeug==3.0.1
 
 # API Documentation
 flasgger==0.9.7.1
+
+# QR Code
+qrcode[pil]==7.4.2

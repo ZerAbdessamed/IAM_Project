@@ -104,7 +104,7 @@ def reset_database(flask_env: str) -> None:
                 full_name="Super Admin",
                 password_hash=generate_password_hash("Admin123!"),
                 is_active_flag=True,
-                mfa_enabled=False,
+                mfa_enabled=True,
             )
             db.session.add(default_admin)
             db.session.commit()

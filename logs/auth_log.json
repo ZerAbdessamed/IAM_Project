@@ -1,0 +1,303 @@
+[
+    {
+        "username": "admin@example.com",
+        "action": "2fa_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:17:18",
+        "type": "mfa"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "2fa_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:17:23",
+        "type": "mfa"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "2fa_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:17:29",
+        "type": "mfa"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "logout",
+        "status": "success",
+        "time": "2026-04-18 19:21:41",
+        "type": "session"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:21:52",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:21:57",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:22:01",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:22:06",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "bruteforce_detected",
+        "status": "blocked",
+        "time": "2026-04-18 19:22:11",
+        "type": "bruteforce"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:22:11",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_blocked",
+        "status": "locked",
+        "time": "2026-04-18 19:22:15",
+        "type": "bruteforce"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-18 19:22:33",
+        "type": "login"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "logout",
+        "status": "success",
+        "time": "2026-04-18 19:30:35",
+        "type": "session"
+    },
+    {
+        "username": "admin",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:31:01",
+        "type": "login"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-18 19:31:10",
+        "type": "login"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "logout",
+        "status": "success",
+        "time": "2026-04-18 19:38:19",
+        "type": "session"
+    },
+    {
+        "username": "admin",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:38:28",
+        "type": "login"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-18 19:38:37",
+        "type": "login"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "2fa_failed",
+        "status": "failed",
+        "time": "2026-04-18 19:39:15",
+        "type": "mfa"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "logout",
+        "status": "success",
+        "time": "2026-04-18 19:45:15",
+        "type": "session"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-18 19:45:25",
+        "type": "login"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-19 09:16:24",
+        "type": "login"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "2fa_failed",
+        "status": "failed",
+        "time": "2026-04-19 09:16:37",
+        "type": "mfa"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "2fa_failed",
+        "status": "failed",
+        "time": "2026-04-19 09:16:45",
+        "type": "mfa"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "logout",
+        "status": "success",
+        "time": "2026-04-19 09:25:21",
+        "type": "session"
+    },
+    {
+        "username": "zeroualiabdessamed6@gmail.com",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-19 09:25:38",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed6@gmail.com",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-19 09:25:57",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed6@gmail.com",
+        "action": "2fa_failed",
+        "status": "failed",
+        "time": "2026-04-19 09:26:30",
+        "type": "mfa"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-19 09:54:27",
+        "type": "login"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "logout",
+        "status": "success",
+        "time": "2026-04-19 09:57:21",
+        "type": "session"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-19 09:57:37",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-19 09:57:43",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-19 09:57:54",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-19 09:57:59",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "bruteforce_detected",
+        "status": "blocked",
+        "time": "2026-04-19 09:58:03",
+        "type": "bruteforce"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-19 09:58:03",
+        "type": "login"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_blocked",
+        "status": "locked",
+        "time": "2026-04-19 09:58:08",
+        "type": "bruteforce"
+    },
+    {
+        "username": "zeroualiabdessamed62@gmail.com",
+        "action": "login_blocked",
+        "status": "locked",
+        "time": "2026-04-19 09:58:24",
+        "type": "bruteforce"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-19 09:58:34",
+        "type": "login"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "logout",
+        "status": "success",
+        "time": "2026-04-19 10:06:04",
+        "type": "session"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-25 14:36:40",
+        "type": "login"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-25 15:01:32",
+        "type": "login"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-25 15:07:07",
+        "type": "login"
+    }
+]

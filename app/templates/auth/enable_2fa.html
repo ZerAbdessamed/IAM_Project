@@ -8,7 +8,9 @@
             <div class="card-body text-center">
                 <h3 class="card-title mb-3">Enable Two-Factor Authentication (2FA)</h3>
                 <p>Scan this QR Code in your Google Authenticator or Authy app:</p>
-                <img src="{{ url_for('auth.qrcode_image') }}" alt="QR Code" class="img-fluid mb-3">
+                <img src="{{ url_for('auth.qrcode_image') }}" 
+     alt="QR Code" 
+     style="width:200px; height:200px;">
 
                 <p>Or enter this code manually in your app: <strong>{{ secret }}</strong></p>
 

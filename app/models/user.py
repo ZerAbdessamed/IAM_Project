@@ -134,6 +134,9 @@ class User(UserMixin, db.Model):
         if not self.totp_secret:
             return False
         totp = pyotp.TOTP(self.totp_secret)
+        print("#"*150)
+        print(code)
+        print(totp.verify(code))
         return totp.verify(code)
 
  
