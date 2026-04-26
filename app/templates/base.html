@@ -26,8 +26,10 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.manage_2fa') }}">Manage MFA</a></li>
                     {% elif current_user.user_type == 'student' %}
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.student_profile') }}">Profile</a></li>
-                    {% elif current_user.user_type == 'staff' %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.setup_security_question') }}">Security Question</a></li>
+                    {% elif current_user.user_type in ['staff', 'faculty', 'external'] %}
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('main.staff_profile') }}">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.setup_security_question') }}">Security Question</a></li>
                     {% endif %}
                 {% endif %}
             </ul>

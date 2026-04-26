@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Security Question Setup - IAM System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <h4><i class="bi bi-shield-check"></i> Security Question</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small">
+                    Configure a security question for password recovery fallback.
+                </p>
+
+                {% if current_question %}
+                <div class="alert alert-info py-2">
+                    Current question: <strong>{{ current_question_label }}</strong>
+                </div>
+                {% endif %}
+
+                <form method="POST" id="security-question-form">
+                    <div class="mb-3">
+                        <label for="security_question" class="form-label">Security Question</label>
+                        <select class="form-select" id="security_question" name="security_question" required>
+                            <option value="">Select a question</option>
+                            {% for key, label in security_questions %}
+                            <option value="{{ key }}" {% if current_question == key %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="security_answer" class="form-label">Security Answer</label>
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="security_answer"
+                            name="security_answer"
+                            minlength="3"
+                            autocomplete="off"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="confirm_security_answer" class="form-label">Confirm Security Answer</label>
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="confirm_security_answer"
+                            name="confirm_security_answer"
+                            minlength="3"
+                            autocomplete="off"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Save Security Question</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById("security-question-form").addEventListener("submit", function(event) {
+    const answer = document.getElementById("security_answer").value;
+    const confirm = document.getElementById("confirm_security_answer").value;
+
+    if (answer !== confirm) {
+        alert("Security answers do not match.");
+        event.preventDefault();
+    }
+});
+</script>
+{% endblock %}

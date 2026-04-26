@@ -6,6 +6,7 @@ from flask_mail import Mail
 from flasgger import Swagger
 from dotenv import load_dotenv
 import importlib
+from sqlalchemy import inspect, text
 
 from app.config import config_by_name
 
@@ -173,6 +174,45 @@ swagger_template = {
     },
 }
 
+
+def _ensure_backward_compatible_schema():
+    """Add newer auth-recovery columns when running against older databases."""
+    engine = db.engine
+    inspector = inspect(engine)
+
+    if "users" not in inspector.get_table_names():
+        return
+
+    existing_columns = {col["name"] for col in inspector.get_columns("users")}
+    statements = []
+
+    if "security_question" not in existing_columns:
+        statements.append("ALTER TABLE users ADD COLUMN security_question VARCHAR(255) NULL")
+    if "security_answer_hash" not in existing_columns:
+        statements.append("ALTER TABLE users ADD COLUMN security_answer_hash VARCHAR(255) NULL")
+    if "security_question_updated_at" not in existing_columns:
+        statements.append("ALTER TABLE users ADD COLUMN security_question_updated_at DATETIME NULL")
+    if "security_failed_attempts" not in existing_columns:
+        statements.append(
+            "ALTER TABLE users ADD COLUMN security_failed_attempts INT NOT NULL DEFAULT 0"
+        )
+    if "security_lockout_until" not in existing_columns:
+        statements.append("ALTER TABLE users ADD COLUMN security_lockout_until DATETIME NULL")
+
+    if not statements:
+        return
+
+    with engine.begin() as connection:
+        for statement in statements:
+            try:
+                connection.execute(text(statement))
+            except Exception as exc:
+                # Handle concurrent startup races where another instance added the column first.
+                message = str(exc).lower()
+                if "duplicate column" in message or "already exists" in message:
+                    continue
+                raise
+
 def create_app(config_name='default'):
     """Application factory."""
     load_dotenv()
@@ -233,5 +273,6 @@ def create_app(config_name='default'):
         # Import model package so SQLAlchemy metadata includes all tables.
         importlib.import_module('app.models')
         db.create_all()
-    
+        _ensure_backward_compatible_schema()
+
     return app

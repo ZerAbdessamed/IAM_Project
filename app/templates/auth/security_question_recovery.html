@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Recover With Security Question - IAM System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <h4><i class="bi bi-person-lock"></i> Security Recovery</h4>
+            </div>
+            <div class="card-body">
+                {% if challenge_active %}
+                <p class="text-muted small mb-3">
+                    Account: <strong>{{ masked_email }}</strong>
+                </p>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Security Question</label>
+                        <p class="form-control-plaintext border rounded px-2 py-2 bg-light">
+                            {{ question_label }}
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="security_answer" class="form-label">Security Answer</label>
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="security_answer"
+                            name="security_answer"
+                            autocomplete="off"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Verify Answer</button>
+                </form>
+                {% else %}
+                <p class="text-muted small">
+                    Enter your email to start recovery with your configured security question.
+                </p>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your account email"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Continue</button>
+                </form>
+                {% endif %}
+
+                <hr>
+                <div class="text-center">
+                    <a href="{{ url_for('auth.forgot_password') }}">Back to Forgot Password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

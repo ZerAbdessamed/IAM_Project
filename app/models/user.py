@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timedelta
 import pyotp
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import UserMixin
@@ -51,6 +51,11 @@ class User(UserMixin, db.Model):
     failed_login_attempts = db.Column(db.Integer, default=0)
     lockout_until = db.Column(db.DateTime, nullable=True)
     password_hash = db.Column(db.String(128), nullable=False)
+    security_question = db.Column(db.String(255), nullable=True)
+    security_answer_hash = db.Column(db.String(255), nullable=True)
+    security_question_updated_at = db.Column(db.DateTime, nullable=True)
+    security_failed_attempts = db.Column(db.Integer, nullable=False, default=0)
+    security_lockout_until = db.Column(db.DateTime, nullable=True)
 
    
     totp_secret = db.Column(db.String(32), nullable=True)
@@ -115,6 +120,57 @@ class User(UserMixin, db.Model):
 
     def check_password(self, raw_password):
         return check_password_hash(self.password_hash, raw_password)
+
+    @staticmethod
+    def normalize_security_answer(raw_answer):
+        # Normalize formatting to reduce false negatives during verification.
+        return " ".join(str(raw_answer or "").strip().lower().split())
+
+    def set_security_question(self, question_key, raw_answer):
+        normalized_answer = self.normalize_security_answer(raw_answer)
+        if len(normalized_answer) < 3:
+            raise ValueError("Security answer must be at least 3 characters")
+
+        if len(normalized_answer) > 255:
+            raise ValueError("Security answer is too long")
+
+        self.security_question = str(question_key or "").strip()[:255] or None
+        self.security_answer_hash = generate_password_hash(normalized_answer)
+        self.security_question_updated_at = datetime.utcnow()
+        self.clear_security_recovery_failures()
+
+    def verify_security_answer(self, raw_answer):
+        if not self.security_answer_hash:
+            return False
+        normalized_answer = self.normalize_security_answer(raw_answer)
+        if not normalized_answer:
+            return False
+        return check_password_hash(self.security_answer_hash, normalized_answer)
+
+    @property
+    def has_security_question(self):
+        return bool(self.security_question and self.security_answer_hash)
+
+    def is_security_recovery_locked(self):
+        return bool(self.security_lockout_until and self.security_lockout_until > datetime.utcnow())
+
+    def register_security_recovery_failure(self, max_attempts=5, lock_minutes=15):
+        max_attempts = max(1, int(max_attempts or 1))
+        lock_minutes = max(1, int(lock_minutes or 1))
+
+        attempts = (self.security_failed_attempts or 0) + 1
+        self.security_failed_attempts = attempts
+
+        if attempts >= max_attempts:
+            self.security_lockout_until = datetime.utcnow() + timedelta(minutes=lock_minutes)
+            self.security_failed_attempts = 0
+            return True
+
+        return False
+
+    def clear_security_recovery_failures(self):
+        self.security_failed_attempts = 0
+        self.security_lockout_until = None
 
     
 

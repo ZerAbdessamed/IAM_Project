@@ -88,6 +88,26 @@ def reset_database(flask_env: str) -> None:
                     conn.execute(text(
                         "ALTER TABLE users ADD COLUMN lockout_until DATETIME NULL"
                     ))
+                if "security_question" not in columns:
+                    conn.execute(text(
+                        "ALTER TABLE users ADD COLUMN security_question VARCHAR(255) NULL"
+                    ))
+                if "security_answer_hash" not in columns:
+                    conn.execute(text(
+                        "ALTER TABLE users ADD COLUMN security_answer_hash VARCHAR(255) NULL"
+                    ))
+                if "security_question_updated_at" not in columns:
+                    conn.execute(text(
+                        "ALTER TABLE users ADD COLUMN security_question_updated_at DATETIME NULL"
+                    ))
+                if "security_failed_attempts" not in columns:
+                    conn.execute(text(
+                        "ALTER TABLE users ADD COLUMN security_failed_attempts INT NOT NULL DEFAULT 0"
+                    ))
+                if "security_lockout_until" not in columns:
+                    conn.execute(text(
+                        "ALTER TABLE users ADD COLUMN security_lockout_until DATETIME NULL"
+                    ))
 
              
                 if "password_hash" in columns:

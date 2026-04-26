@@ -299,5 +299,103 @@
         "status": "success",
         "time": "2026-04-25 15:07:07",
         "type": "login"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-25 16:11:55",
+        "type": "login"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-25 16:13:03",
+        "type": "login"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "2fa_failed",
+        "status": "failed",
+        "time": "2026-04-25 16:13:59",
+        "type": "mfa"
+    },
+    {
+        "username": "admin",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-25 16:14:21",
+        "type": "login"
+    },
+    {
+        "username": "admin",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-25 16:14:58",
+        "type": "login"
+    },
+    {
+        "username": "admin",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-25 16:15:12",
+        "type": "login"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-25 16:19:48",
+        "type": "login"
+    },
+    {
+        "username": "deafmute000@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-25 16:34:55",
+        "type": "bruteforce"
+    },
+    {
+        "username": "deafmute000@gmail.com",
+        "action": "login_failed",
+        "status": "failed",
+        "time": "2026-04-25 16:35:17",
+        "type": "bruteforce"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-26 01:44:54",
+        "type": "login"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "2fa_failed",
+        "status": "failed",
+        "time": "2026-04-26 01:47:02",
+        "type": "mfa"
+    },
+    {
+        "username": "admin",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-26 02:19:41",
+        "type": "login"
+    },
+    {
+        "username": "admin@example.com",
+        "action": "logout",
+        "status": "success",
+        "time": "2026-04-26 02:24:11",
+        "type": "session"
+    },
+    {
+        "username": "hameid@batna.com",
+        "action": "login_success",
+        "status": "success",
+        "time": "2026-04-26 02:24:18",
+        "type": "login"
     }
 ]

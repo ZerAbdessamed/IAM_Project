@@ -7,7 +7,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL",
         (
-            f"mysql+pymysql://{os.getenv('DB_USER', 'root')}:{os.getenv('DB_PASSWORD', '')}"
+            f"mysql+pymysql://{os.getenv('DB_USER', 'root')}:{os.getenv('DB_PASSWORD', 'root')}"
             f"@{os.getenv('DB_HOST', 'localhost')}:{os.getenv('DB_PORT', '3306')}/{os.getenv('DB_NAME', 'iam_db')}"
         ),
     )
@@ -18,6 +18,19 @@ class Config:
     MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", "False").lower() == "true"
     MAIL_USERNAME = os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+
+    PASSWORD_RESET_TOKEN_EXPIRES_SECONDS = int(
+        os.getenv("PASSWORD_RESET_TOKEN_EXPIRES_SECONDS", "1800")
+    )
+    SECURITY_RECOVERY_MAX_ATTEMPTS = int(
+        os.getenv("SECURITY_RECOVERY_MAX_ATTEMPTS", "5")
+    )
+    SECURITY_RECOVERY_LOCKOUT_MINUTES = int(
+        os.getenv("SECURITY_RECOVERY_LOCKOUT_MINUTES", "15")
+    )
+    SECURITY_RECOVERY_CHALLENGE_TTL_MINUTES = int(
+        os.getenv("SECURITY_RECOVERY_CHALLENGE_TTL_MINUTES", "10")
+    )
 
 
 class DevelopmentConfig(Config):
